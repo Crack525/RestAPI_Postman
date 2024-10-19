@@ -1,0 +1,33 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Newman
+      run: |
+        npm install -g newman
+        npm install -g newman-reporter-htmlextra
+    
+    - name: Run PoetryDB API Tests
+      run: newman run collections/PoetryDB_API_Tests.postman_collection.json -e environments/dev.json -r cli,htmlextra
+    
+    - name: Run Cat Facts API Tests
+      run: newman run collections/Cat_Facts_API_Tests.postman_collection.json -e environments/dev.json -r cli,htmlextra
+    
+    - name: Archive test results
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: test-results
+        path: newman/
