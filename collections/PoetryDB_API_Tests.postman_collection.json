@@ -20,7 +20,7 @@
 							"",
 							"// Response time validation",
 							"pm.test(\"Response time is acceptable\", function () {",
-							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);  // Ensure response time is less than 1000ms",
 							"});",
 							"",
 							"// Schema validation",
@@ -36,7 +36,7 @@
 							"                \"type\": \"array\",",
 							"                \"items\": { \"type\": \"string\" }",
 							"            },",
-							"            \"linecount\": { \"type\": \"number\" }",
+							"            \"linecount\": { \"type\": \"string\" }  // Updated to string, as linecount might be in quotes",
 							"        }",
 							"    }",
 							"};",
@@ -48,13 +48,28 @@
 							"// Data presence validation",
 							"pm.test(\"Response contains required data\", function () {",
 							"    const responseData = pm.response.json();",
+							"    ",
+							"    // Check that the response is a non-empty array",
 							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
-							"    pm.expect(responseData[0].title).to.be.a('string').that.is.not.empty;",
-							"    pm.expect(responseData[0].author).to.be.a('string').that.is.not.empty;",
-							"    pm.expect(responseData[0].lines).to.be.an('array').that.is.not.empty;",
-							"});"
+							"    ",
+							"    // Validate that the first poem object has required fields",
+							"    const poem = responseData[0];",
+							"    pm.expect(poem.title).to.be.a('string').that.is.not.empty;",
+							"    pm.expect(poem.author).to.be.a('string').that.is.not.empty;",
+							"    pm.expect(poem.lines).to.be.an('array').that.is.not.empty;",
+							"    ",
+							"    // Ensure linecount is present and valid",
+							"    pm.expect(poem.linecount).to.be.a('string').that.is.not.empty;",
+							"    ",
+							"    // Check that the lines array contains valid string lines",
+							"    poem.lines.forEach(line => {",
+							"        pm.expect(line).to.be.a('string');",
+							"    });",
+							"});",
+							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -135,18 +150,20 @@
 					"script": {
 						"exec": [
 							"// Status code validation for not found",
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.response.to.have.status(404);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);  // Since the API returns a 200 status code",
 							"});",
 							"",
-							"// Error response validation",
-							"pm.test(\"Error response structure is correct\", function () {",
+							"// Error response validation (for 404 status in response body)",
+							"pm.test(\"Response contains a 404 status in the body\", function () {",
 							"    const responseData = pm.response.json();",
 							"    pm.expect(responseData).to.have.property('status', 404);",
-							"    pm.expect(responseData).to.have.property('reason');",
-							"});"
+							"    pm.expect(responseData).to.have.property('reason').that.is.a('string').and.equals('Not found');",
+							"});",
+							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
