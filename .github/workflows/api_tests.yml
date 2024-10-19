@@ -29,11 +29,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install Newman and Reporter
-        run: |
-          npm install -g newman@${{ env.NEWMAN_VERSION }}
-          npm install -g newman-reporter-htmlextra@${{ env.REPORTER_VERSION }}
-          npm install -g newman-reporter-junitfull
+      - name: Install dependencies
+        run: npm install
 
       - name: Create Results Directory
         run: |
@@ -85,25 +82,3 @@ jobs:
           name: test-reports
           path: test-results/
           retention-days: 30
-
-      - name: Send Notification
-        if: always()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_CHANNEL: api-testing
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_TITLE: API Test Results
-          SLACK_MESSAGE: 'API Tests completed with status: ${{ job.status }}'
-        continue-on-error: true
-
-  deploy:
-    needs: api-tests
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Deploy to Production
-        run: |
-          echo "Deployment would happen here"
-          # Add your deployment steps here
