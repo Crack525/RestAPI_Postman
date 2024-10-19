@@ -1,0 +1,5 @@
+node_modules/
+test-results/
+newman/
+.DS_Store
+*.log
