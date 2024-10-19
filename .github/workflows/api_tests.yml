@@ -41,8 +41,8 @@ jobs:
 
       - name: Run PoetryDB API Tests
         run: |
-          npx newman run collections/PoetryDB_API_Tests.postman_collection.json \
-          -e environments/dev.json \
+          npx newman run ./collections/PoetryDB_API_Tests.postman_collection.json \
+          -e ./environments/dev.json \
           -r cli,htmlextra,junitfull \
           --reporter-htmlextra-export test-results/poetry/report.html \
           --reporter-junitfull-export test-results/poetry/junit-report.xml
@@ -51,8 +51,8 @@ jobs:
 
       - name: Run Cat Facts API Tests
         run: |
-          npx newman run collections/Cat_Facts_API_Tests.postman_collection.json \
-          -e environments/dev.json \
+          npx newman run ./collections/Cat_Facts_API_Tests.postman_collection.json \
+          -e ./environments/dev.json \
           -r cli,htmlextra,junitfull \
           --reporter-htmlextra-export test-results/catfacts/report.html \
           --reporter-junitfull-export test-results/catfacts/junit-report.xml
