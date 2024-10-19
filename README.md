@@ -9,14 +9,10 @@ This project contains automated API tests for both PoetryDB and Cat Facts APIs u
 │   └── workflows/
 │       └── api-tests.yml
 ├── collections/
-│   ├── poetry-api-tests.json
-│   └── cat-facts-api-tests.json
+│   ├── Cat_Facts_API_Tests.postman_collection.json
+│   └── PoetryDB_API_Tests.postman_collection.json
 ├── environments/
 │   ├── dev.json
-│   └── prod.json
-├── schemas/
-│   ├── poetry-response.json
-│   └── cat-facts-response.json
 └── README.md
 ```
 
@@ -68,8 +64,8 @@ npm install -g newman-reporter-htmlextra
 
 3. Run tests locally:
 ```bash
-newman run collections/poetry-api-tests.json -e environments/dev.json -r htmlextra
-newman run collections/cat-facts-api-tests.json -e environments/dev.json -r htmlextra
+newman run collections/PoetryDB_API_Tests.postman_collection.json -e environments/dev.json -r cli,htmlextra
+newman newman run collections/Cat_Facts_API_Tests.postman_collection.json -e environments/dev.json -r cli,htmlextra
 ```
 
 ## GitHub Actions Integration
