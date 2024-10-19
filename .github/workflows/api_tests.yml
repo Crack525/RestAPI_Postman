@@ -45,7 +45,8 @@ jobs:
           -e ./environments/dev.postman_environment.json \
           -r cli,htmlextra,junitfull \
           --reporter-htmlextra-export test-results/poetry/report.html \
-          --reporter-junitfull-export test-results/poetry/junit-report.xml
+          --reporter-junitfull-export test-results/poetry/junit-report.xml \
+          || true
         continue-on-error: true  # Continue to next step even if this fails
 
 
@@ -55,7 +56,7 @@ jobs:
           -e ./environments/dev.postman_environment.json \
           -r cli,htmlextra,junitfull \
           --reporter-htmlextra-export test-results/catfacts/report.html \
-          --reporter-junitfull-export test-results/catfacts/junit-report.xml
+          --reporter-junitfull-export test-results/catfacts/junit-report.xml || true
         continue-on-error: true  # Continue to next step even if this fails
 
       - name: Check Test Results
