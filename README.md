@@ -13,7 +13,7 @@ This repository hosts a comprehensive suite of tests for the Cat Facts API and P
 │   ├── Cat_Facts_API_Tests.postman_collection.json
 │   └── PoetryDB_API_Tests.postman_collection.json
 ├── environments/
-│   ├── dev.json
+│   ├── dev.postman_collection.json
 └── README.md
 ```
 
