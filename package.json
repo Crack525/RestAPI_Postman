@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "API Testing with Postman/Newman",
   "scripts": {
-    "test:poetry": "newman run ./collections/PoetryDB_API_Tests.postman_collection.json -e ./environments/dev.json -r cli,htmlextra,junitfull",
-    "test:catfacts": "newman run ./collections/Cat_Facts_API_Tests.postman_collection.json -e ./environments/dev.json -r cli,htmlextra,junitfull",
+    "test:poetry": "newman run ./collections/PoetryDB_API_Tests.postman_collection.json -e ./environments/dev.postman_environment.json -r cli,htmlextra,junitfull",
+    "test:catfacts": "newman run ./collections/Cat_Facts_API_Tests.postman_collection.json -e ./environments/dev.postman_environment.json -r cli,htmlextra,junitfull",
     "test": "newman run ./collections/*.json -e ./environments/dev.json -r cli,htmlextra,junitfull"
   },
   "dependencies": {},
