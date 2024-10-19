@@ -1,7 +1,8 @@
 # API Testing Project
 
 ## Overview
-This project contains automated API tests for both PoetryDB and Cat Facts APIs using Postman/Newman with GitHub Actions integration.
+This repository hosts a comprehensive suite of tests for the Cat Facts API and PoetryDB API, built with Postman and seamlessly integrated into a GitHub Actions pipeline for automated testing.
+
 
 ## Project Structure
 ```
