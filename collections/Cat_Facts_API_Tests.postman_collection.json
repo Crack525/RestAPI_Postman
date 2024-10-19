@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "084fa347-af76-4c12-89eb-22829a711c2b",
+		"name": "Cat Facts API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1445947"
+	},
+	"item": [
+		{
+			"name": "Get Random Fact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status code validation",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Response time validation",
+							"pm.test(\"Response time is acceptable\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"// Schema validation",
+							"const schema = {",
+							"    \"type\": \"object\",",
+							"    \"required\": [\"fact\", \"length\"],",
+							"    \"properties\": {",
+							"        \"fact\": { \"type\": \"string\" },",
+							"        \"length\": { \"type\": \"number\" }",
+							"    }",
+							"};",
+							"",
+							"pm.test(\"Schema validation\", function () {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"// Content validation",
+							"pm.test(\"Fact content is valid\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.fact).to.be.a('string').that.is.not.empty;",
+							"    pm.expect(responseData.fact.length).to.equal(responseData.length);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://cat-fact.herokuapp.com/facts/random",
+					"protocol": "https",
+					"host": [
+						"cat-fact",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"facts",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Multiple Facts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status code validation",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Amount validation",
+							"const amount = parseInt(pm.variables.get(\"amount\"));",
+							"pm.test(`Response contains ${amount} facts`, function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array').with.lengthOf(amount);",
+							"});",
+							"",
+							"// Data structure validation",
+							"pm.test(\"Each fact has correct structure\", function () {",
+							"    const responseData = pm.response.json();",
+							"    responseData.forEach(fact => {",
+							"        pm.expect(fact).to.have.property('fact').that.is.a('string');",
+							"        pm.expect(fact).to.have.property('length').that.is.a('number');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://cat-fact.herokuapp.com/facts/random?amount={{amount}}",
+					"protocol": "https",
+					"host": [
+						"cat-fact",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"facts",
+						"random"
+					],
+					"query": [
+						{
+							"key": "amount",
+							"value": "{{amount}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Parameter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status code validation",
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"// Error response validation",
+							"pm.test(\"Error response is correct\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.have.property('error');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://cat-fact.herokuapp.com/facts/random?amount=invalid",
+					"protocol": "https",
+					"host": [
+						"cat-fact",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"facts",
+						"random"
+					],
+					"query": [
+						{
+							"key": "amount",
+							"value": "invalid"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
